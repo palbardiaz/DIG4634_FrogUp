@@ -12,6 +12,8 @@
         <activity android:name=".ProActivity"></activity>
         <activity android:name=".IntermediateActivity" />
         <activity android:name=".CasualActivity" />
+        <activity android:name=".MusicPlayerActivity"></activity>
+        <activity android:name=".LeaderboardActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
