@@ -21,4 +21,19 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(getBaseContext(), LeaderboardActivity.class);
         startActivity(myIntent);
     }
+
+    public void onCasualClicked(View view) {
+        Intent myIntent = new Intent(getBaseContext(), CasualActivity.class);
+        startActivity(myIntent);
+    }
+
+    public void onIntermediateClicked(View view) {
+        Intent myIntent = new Intent(getBaseContext(), IntermediateActivity.class);
+        startActivity(myIntent);
+    }
+
+    public void onProClicked(View view) {
+        Intent myIntent = new Intent(getBaseContext(), ProActivity.class);
+        startActivity(myIntent);
+    }
 }
