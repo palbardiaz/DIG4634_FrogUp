@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,11 +21,27 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
 
     CasualAnimator my_animator;
 
+    Player player = new Player();
+    float acc_x = 0.0f;
+    Paint player_paint;
+    Paint platform_paint;
+
+    StandardPlatform platform;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_casual);
 
+        player_paint=new Paint();
+        player_paint.setColor(Color.GREEN);
+        player_paint.setStyle(Paint.Style.FILL);
+
+        platform_paint=new Paint();
+        platform_paint.setColor(Color.BLACK);
+        platform_paint.setStyle(Paint.Style.FILL);
+
+        platform = new StandardPlatform(450, 900);
 
         SensorManager manager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer=manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -42,7 +59,7 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
 
     public void update(int width, int height){
 
-
+        player.update(acc_x, width, height, platform);
 
     }
 
@@ -53,15 +70,30 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
         Canvas c=holder.lockCanvas();
 
         update(c.getWidth(),c.getHeight());
+        Log.d("Example", String.valueOf(c.getWidth()));
 
-        c.drawColor(Color.rgb(0,200,0));
+        c.drawColor(Color.rgb(250,250,250));
+
+        // draw player
+        c.drawRect(player.getX() - player.getRadius(),
+                player.getY() + player.getRadius(),
+                player.getX() + player.getRadius(),
+                player.getY() - player.getRadius(),
+                player_paint);
+
+        // draw platform
+        c.drawRect(platform.getX() - platform.getWidth()/2,
+                platform.getY() + platform.getHeight()/2,
+                platform.getX() + platform.getWidth()/2,
+                platform.getY() - platform.getHeight()/2,
+                platform_paint);
 
         holder.unlockCanvasAndPost(c);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-
+        acc_x = sensorEvent.values[0];
     }
 
     @Override
