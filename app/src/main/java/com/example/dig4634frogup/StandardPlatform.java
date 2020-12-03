@@ -28,4 +28,8 @@ public class StandardPlatform {
     public int getHeight() {
         return height;
     }
+
+    public void update(float cameraSpeed) {
+        yPos -= cameraSpeed;
+    }
 }

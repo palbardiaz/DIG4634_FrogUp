@@ -21,12 +21,14 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
 
     CasualAnimator my_animator;
 
+    float cameraSpeed = 0.0f;
+
     Player player = new Player();
     float acc_x = 0.0f;
     Paint player_paint;
     Paint platform_paint;
 
-    StandardPlatform platform;
+    StandardPlatform[] platforms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,10 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
         platform_paint.setColor(Color.BLACK);
         platform_paint.setStyle(Paint.Style.FILL);
 
-        platform = new StandardPlatform(450, 900);
+        platforms = new StandardPlatform[3];
+        platforms[0] = new StandardPlatform(450, 900);
+        platforms[1] = new StandardPlatform(600, -200);
+        platforms[2] = new StandardPlatform(300, -700);
 
         SensorManager manager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer=manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -59,7 +64,18 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
 
     public void update(int width, int height){
 
-        player.update(acc_x, width, height, platform);
+        player.update(acc_x, width, height, platforms, cameraSpeed);
+
+        for (int i = 0; i < platforms.length; i++) {
+            platforms[i].update(cameraSpeed);
+        }
+
+        if (player.getY() < 500 && player.getSpeed() < 0) {
+            cameraSpeed = player.getSpeed();
+            //Log.d("Speed", String.valueOf(cameraSpeed));
+        } else {
+            cameraSpeed = 0.0f;
+        }
 
     }
 
@@ -74,19 +90,21 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
 
         c.drawColor(Color.rgb(250,250,250));
 
+        // draw platforms
+        for (int i = 0; i < platforms.length; i++) {
+            c.drawRect(platforms[i].getX() - (float)platforms[i].getWidth()/2,
+                    platforms[i].getY() + (float)platforms[i].getHeight()/2,
+                    platforms[i].getX() + (float)platforms[i].getWidth()/2,
+                    platforms[i].getY() - (float)platforms[i].getHeight()/2,
+                    platform_paint);
+        }
+
         // draw player
         c.drawRect(player.getX() - player.getRadius(),
                 player.getY() + player.getRadius(),
                 player.getX() + player.getRadius(),
                 player.getY() - player.getRadius(),
                 player_paint);
-
-        // draw platform
-        c.drawRect(platform.getX() - platform.getWidth()/2,
-                platform.getY() + platform.getHeight()/2,
-                platform.getX() + platform.getWidth()/2,
-                platform.getY() - platform.getHeight()/2,
-                platform_paint);
 
         holder.unlockCanvasAndPost(c);
     }
