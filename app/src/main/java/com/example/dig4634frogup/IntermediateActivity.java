@@ -3,6 +3,7 @@ package com.example.dig4634frogup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -83,6 +84,17 @@ public class IntermediateActivity extends AppCompatActivity implements SensorEve
     }
 
     public void update(int width, int height){
+
+        if (player.isDead()) {
+
+            Intent intent = new Intent(getBaseContext(), GameOverActivity.class);
+            intent.putExtra("SCORE", Integer.toString(score));
+            intent.putExtra("LEVEL", "INTERMEDIATE");
+            startActivity(intent);
+            my_animator.finish();
+            finish();
+            //Log.d("DEATH", "DEADDDD");
+        }
 
         score -= cameraSpeed/10;
 

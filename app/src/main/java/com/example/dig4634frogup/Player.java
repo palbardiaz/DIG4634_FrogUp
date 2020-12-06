@@ -12,6 +12,7 @@ public class Player {
     private int rad;
     private static final float GRAVITY = 1.5f;
     private boolean alive = true;
+    private boolean stunned = false;
 
     public Player() {
         xPos = 540;
@@ -36,7 +37,7 @@ public class Player {
         return rad;
     }
 
-    public boolean isAlive() {return alive;}
+    public boolean isDead() {return !alive;}
 
     public void update(float acc_x, int w, int h, StandardPlatform[] p, BoostPlatform b, float cameraSpeed) {
 
@@ -85,45 +86,55 @@ public class Player {
             xPos = 1080;
         }
 
-        xPos -= acc_x*2.0f;
         yPos += yVel - cameraSpeed;
         yVel += GRAVITY;
 
-        // check for collisions, probably pass in array of platforms
+        if (!stunned) {
+            xPos -= acc_x*2.0f;
 
-        for (int i= 0; i < p.length; i++) {
+            // check for collisions, probably pass in array of platforms
+
+            for (int i= 0; i < p.length; i++) {
+                if (yVel >= 0.0f
+                        && yPos + rad >= p[i].getY() - (float)p[i].getHeight()/2 - 20
+                        && yPos + rad <= p[i].getY() - (float)p[i].getHeight()/2 + 20
+                        && xPos < p[i].getX() + (float)p[i].getWidth()/2 + 50
+                        && xPos > p[i].getX() - (float)p[i].getWidth()/2- 50) {
+                    yVel = JUMP_VEL;
+                    //Log.d("Info" , p.getY())
+                }
+            }
+
+            for (int i= 0; i < m.length; i++) {
+                if (yVel >= 0.0f
+                        && yPos + rad >= m[i].getY() - (float)m[i].getHeight()/2 - 20
+                        && yPos + rad <= m[i].getY() - (float)m[i].getHeight()/2 + 20
+                        && xPos < m[i].getX() + (float)m[i].getWidth()/2 + 50
+                        && xPos > m[i].getX() - (float)m[i].getWidth()/2- 50) {
+                    yVel = JUMP_VEL;
+                    //Log.d("Info" , p.getY())
+                }
+            }
+
             if (yVel >= 0.0f
-                    && yPos + rad >= p[i].getY() - (float)p[i].getHeight()/2 - 20
-                    && yPos + rad <= p[i].getY() - (float)p[i].getHeight()/2 + 20
-                    && xPos < p[i].getX() + (float)p[i].getWidth()/2 + 50
-                    && xPos > p[i].getX() - (float)p[i].getWidth()/2- 50) {
-                yVel = JUMP_VEL;
+                    && yPos + rad >= b.getY() - (float)b.getHeight()/2 - 20
+                    && yPos + rad <= b.getY() - (float)b.getHeight()/2 + 20
+                    && xPos < b.getX() + (float)b.getWidth()/2 + 50
+                    && xPos > b.getX() - (float)b.getWidth()/2- 50) {
+                yVel = BOOST_VEL;
                 //Log.d("Info" , p.getY())
             }
-        }
-
-        for (int i= 0; i < m.length; i++) {
-            if (yVel >= 0.0f
-                    && yPos + rad >= m[i].getY() - (float)m[i].getHeight()/2 - 20
-                    && yPos + rad <= m[i].getY() - (float)m[i].getHeight()/2 + 20
-                    && xPos < m[i].getX() + (float)m[i].getWidth()/2 + 50
-                    && xPos > m[i].getX() - (float)m[i].getWidth()/2- 50) {
-                yVel = JUMP_VEL;
-                //Log.d("Info" , p.getY())
-            }
-        }
-
-        if (yVel >= 0.0f
-                && yPos + rad >= b.getY() - (float)b.getHeight()/2 - 20
-                && yPos + rad <= b.getY() - (float)b.getHeight()/2 + 20
-                && xPos < b.getX() + (float)b.getWidth()/2 + 50
-                && xPos > b.getX() - (float)b.getWidth()/2- 50) {
-            yVel = BOOST_VEL;
-            //Log.d("Info" , p.getY())
         }
 
         if (yPos + rad >= h) { // detect ground
             alive = false;
+        }
+    }
+
+    public void checkBounds() {
+        if (xPos + rad > 1080 || xPos - rad < 0) {
+            xVel = 0;
+            stunned = true;
         }
     }
 }
