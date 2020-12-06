@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,13 +19,54 @@ public class IntermediateActivity extends AppCompatActivity implements SensorEve
 
     SurfaceHolder holder=null;
 
+    int score = 0;
+
     IntermediateAnimator my_animator;
+
+    float cameraSpeed = 0.0f;
+
+    Player player = new Player();
+    float acc_x = 0.0f;
+    Paint player_paint;
+    Paint platform_paint;
+    Paint score_paint;
+    Paint boost_paint;
+
+    StandardPlatform[] platforms;
+    BoostPlatform boostPlatform;
+    MovingPlatform[] movingPlatforms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intermediate);
 
+        player_paint=new Paint();
+        player_paint.setColor(Color.GREEN);
+        player_paint.setStyle(Paint.Style.FILL);
+
+        platform_paint=new Paint();
+        platform_paint.setColor(Color.BLACK);
+        platform_paint.setStyle(Paint.Style.FILL);
+
+        boost_paint=new Paint();
+        boost_paint.setColor(Color.CYAN);
+        boost_paint.setStyle(Paint.Style.FILL);
+
+        score_paint=new Paint();
+        score_paint.setColor(Color.BLACK);
+        score_paint.setTextSize(100);
+
+        platforms = new StandardPlatform[3];
+        platforms[0] = new StandardPlatform(540, 1500);
+        platforms[1] = new StandardPlatform(300, 500);
+        platforms[2] = new StandardPlatform(300, -300);
+
+        boostPlatform = new BoostPlatform(400, -1000);
+
+        movingPlatforms = new MovingPlatform[2];
+        movingPlatforms[0] = new MovingPlatform(800, 1000);
+        movingPlatforms[1] = new MovingPlatform(400, 100);
 
         SensorManager manager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer=manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -42,7 +84,26 @@ public class IntermediateActivity extends AppCompatActivity implements SensorEve
 
     public void update(int width, int height){
 
+        score -= cameraSpeed/10;
 
+        player.update(acc_x, width, height, platforms, boostPlatform, movingPlatforms, cameraSpeed);
+
+        for (int i = 0; i < platforms.length; i++) {
+            platforms[i].update(cameraSpeed);
+        }
+
+        for (int i = 0; i < movingPlatforms.length; i++) {
+            movingPlatforms[i].update(cameraSpeed);
+        }
+
+        boostPlatform.update(cameraSpeed);
+
+        if (player.getY() < 500 && player.getSpeed() < 0) {
+            cameraSpeed = player.getSpeed();
+            //Log.d("Speed", String.valueOf(cameraSpeed));
+        } else {
+            cameraSpeed = 0.0f;
+        }
 
     }
 
@@ -54,14 +115,48 @@ public class IntermediateActivity extends AppCompatActivity implements SensorEve
 
         update(c.getWidth(),c.getHeight());
 
-        c.drawColor(Color.rgb(0,0,200));
+        c.drawColor(Color.rgb(250,250,250));
+
+        // draw platforms
+        for (int i = 0; i < platforms.length; i++) {
+            c.drawRect(platforms[i].getX() - (float)platforms[i].getWidth()/2,
+                    platforms[i].getY() + (float)platforms[i].getHeight()/2,
+                    platforms[i].getX() + (float)platforms[i].getWidth()/2,
+                    platforms[i].getY() - (float)platforms[i].getHeight()/2,
+                    platform_paint);
+        }
+
+        // draw moving platforms
+        for (int i = 0; i < movingPlatforms.length; i++) {
+            c.drawRect(movingPlatforms[i].getX() - (float)movingPlatforms[i].getWidth()/2,
+                    movingPlatforms[i].getY() + (float)movingPlatforms[i].getHeight()/2,
+                    movingPlatforms[i].getX() + (float)movingPlatforms[i].getWidth()/2,
+                    movingPlatforms[i].getY() - (float)movingPlatforms[i].getHeight()/2,
+                    platform_paint);
+        }
+
+        // draw boost platforms
+        c.drawRect(boostPlatform.getX() - (float)boostPlatform.getWidth()/2,
+                boostPlatform.getY() + (float)boostPlatform.getHeight()/2,
+                boostPlatform.getX() + (float)boostPlatform.getWidth()/2,
+                boostPlatform.getY() - (float)boostPlatform.getHeight()/2,
+                boost_paint);
+
+        // draw player
+        c.drawRect(player.getX() - player.getRadius(),
+                player.getY() + player.getRadius(),
+                player.getX() + player.getRadius(),
+                player.getY() - player.getRadius(),
+                player_paint);
+
+        c.drawText(Integer.toString(score), 100, 100, score_paint);
 
         holder.unlockCanvasAndPost(c);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-
+        acc_x = sensorEvent.values[0];
     }
 
     @Override

@@ -76,4 +76,54 @@ public class Player {
             alive = false;
         }
     }
+
+    public void update(float acc_x, int w, int h, StandardPlatform[] p, BoostPlatform b, MovingPlatform[] m, float cameraSpeed) {
+
+        if (xPos > 1080) {
+            xPos = 0;
+        } else if (xPos < 0) {
+            xPos = 1080;
+        }
+
+        xPos -= acc_x*2.0f;
+        yPos += yVel - cameraSpeed;
+        yVel += GRAVITY;
+
+        // check for collisions, probably pass in array of platforms
+
+        for (int i= 0; i < p.length; i++) {
+            if (yVel >= 0.0f
+                    && yPos + rad >= p[i].getY() - (float)p[i].getHeight()/2 - 20
+                    && yPos + rad <= p[i].getY() - (float)p[i].getHeight()/2 + 20
+                    && xPos < p[i].getX() + (float)p[i].getWidth()/2 + 50
+                    && xPos > p[i].getX() - (float)p[i].getWidth()/2- 50) {
+                yVel = JUMP_VEL;
+                //Log.d("Info" , p.getY())
+            }
+        }
+
+        for (int i= 0; i < m.length; i++) {
+            if (yVel >= 0.0f
+                    && yPos + rad >= m[i].getY() - (float)m[i].getHeight()/2 - 20
+                    && yPos + rad <= m[i].getY() - (float)m[i].getHeight()/2 + 20
+                    && xPos < m[i].getX() + (float)m[i].getWidth()/2 + 50
+                    && xPos > m[i].getX() - (float)m[i].getWidth()/2- 50) {
+                yVel = JUMP_VEL;
+                //Log.d("Info" , p.getY())
+            }
+        }
+
+        if (yVel >= 0.0f
+                && yPos + rad >= b.getY() - (float)b.getHeight()/2 - 20
+                && yPos + rad <= b.getY() - (float)b.getHeight()/2 + 20
+                && xPos < b.getX() + (float)b.getWidth()/2 + 50
+                && xPos > b.getX() - (float)b.getWidth()/2- 50) {
+            yVel = BOOST_VEL;
+            //Log.d("Info" , p.getY())
+        }
+
+        if (yPos + rad >= h) { // detect ground
+            alive = false;
+        }
+    }
 }

@@ -17,7 +17,7 @@ public class IntermediateAnimator extends Thread {
             surfaceActivity.draw();
 
             try {
-                sleep(50);
+                sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
