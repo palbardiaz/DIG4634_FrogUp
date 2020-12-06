@@ -2,7 +2,7 @@ package com.example.dig4634frogup;
 
 import java.util.Random;
 
-public class StandardPlatform {
+public class BoostPlatform {
     private float xPos;
     private float yPos;
     private int width;
@@ -11,7 +11,7 @@ public class StandardPlatform {
     private Random ran;
 
 
-    public StandardPlatform(int x, int y) {
+    public BoostPlatform(int x, int y) {
         xPos = x;
         yPos = y;
         width = 200;
@@ -40,7 +40,7 @@ public class StandardPlatform {
         if (yPos > 2100) {
             //xPos = 500;
             xPos = ran.nextInt(900) + 100;
-            yPos = -1 * (ran.nextInt(300) + 50);
+            yPos = -1 * (ran.nextInt(4000) + 6000);
         }
         yPos -= cameraSpeed;
     }

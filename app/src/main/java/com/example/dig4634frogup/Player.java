@@ -8,8 +8,10 @@ public class Player {
     private float xVel;
     private float yVel;
     private static final float JUMP_VEL = -60.0f;
+    private static final float BOOST_VEL = -100.0f;
     private int rad;
     private static final float GRAVITY = 1.5f;
+    private boolean alive = true;
 
     public Player() {
         xPos = 540;
@@ -34,7 +36,16 @@ public class Player {
         return rad;
     }
 
-    public void update(float acc_x, int w, int h, StandardPlatform[] p, float cameraSpeed) {
+    public boolean isAlive() {return alive;}
+
+    public void update(float acc_x, int w, int h, StandardPlatform[] p, BoostPlatform b, float cameraSpeed) {
+
+        if (xPos > 1080) {
+            xPos = 0;
+        } else if (xPos < 0) {
+            xPos = 1080;
+        }
+
         xPos -= acc_x*2.0f;
         yPos += yVel - cameraSpeed;
         yVel += GRAVITY;
@@ -52,8 +63,17 @@ public class Player {
             }
         }
 
+        if (yVel >= 0.0f
+                && yPos + rad >= b.getY() - (float)b.getHeight()/2 - 20
+                && yPos + rad <= b.getY() - (float)b.getHeight()/2 + 20
+                && xPos < b.getX() + (float)b.getWidth()/2 + 50
+                && xPos > b.getX() - (float)b.getWidth()/2- 50) {
+            yVel = BOOST_VEL;
+            //Log.d("Info" , p.getY())
+        }
+
         if (yPos + rad >= h) { // detect ground
-            yVel = JUMP_VEL;
+            alive = false;
         }
     }
 }

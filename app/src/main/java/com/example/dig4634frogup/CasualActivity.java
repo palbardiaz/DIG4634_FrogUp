@@ -11,6 +11,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,6 +19,8 @@ import android.view.SurfaceView;
 public class CasualActivity extends AppCompatActivity implements SensorEventListener, SurfaceHolder.Callback{
 
     SurfaceHolder holder=null;
+
+    int score = 0;
 
     CasualAnimator my_animator;
 
@@ -27,8 +30,11 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
     float acc_x = 0.0f;
     Paint player_paint;
     Paint platform_paint;
+    Paint score_paint;
+    Paint boost_paint;
 
     StandardPlatform[] platforms;
+    BoostPlatform boostPlatform;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +49,22 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
         platform_paint.setColor(Color.BLACK);
         platform_paint.setStyle(Paint.Style.FILL);
 
-        platforms = new StandardPlatform[3];
-        platforms[0] = new StandardPlatform(450, 900);
-        platforms[1] = new StandardPlatform(600, -200);
-        platforms[2] = new StandardPlatform(300, -700);
+        boost_paint=new Paint();
+        boost_paint.setColor(Color.CYAN);
+        boost_paint.setStyle(Paint.Style.FILL);
+
+        score_paint=new Paint();
+        score_paint.setColor(Color.BLACK);
+        score_paint.setTextSize(100);
+
+        platforms = new StandardPlatform[5];
+        platforms[0] = new StandardPlatform(540, 1500);
+        platforms[1] = new StandardPlatform(800, 1000);
+        platforms[2] = new StandardPlatform(300, 500);
+        platforms[3] = new StandardPlatform(400, 100);
+        platforms[4] = new StandardPlatform(300, -300);
+
+        boostPlatform = new BoostPlatform(400, -1000);
 
         SensorManager manager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer=manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -64,11 +82,15 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
 
     public void update(int width, int height){
 
-        player.update(acc_x, width, height, platforms, cameraSpeed);
+        score -= cameraSpeed/10;
+
+        player.update(acc_x, width, height, platforms, boostPlatform, cameraSpeed);
 
         for (int i = 0; i < platforms.length; i++) {
             platforms[i].update(cameraSpeed);
         }
+
+        boostPlatform.update(cameraSpeed);
 
         if (player.getY() < 500 && player.getSpeed() < 0) {
             cameraSpeed = player.getSpeed();
@@ -99,12 +121,21 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
                     platform_paint);
         }
 
+        // draw boost platforms
+        c.drawRect(boostPlatform.getX() - (float)boostPlatform.getWidth()/2,
+                boostPlatform.getY() + (float)boostPlatform.getHeight()/2,
+                boostPlatform.getX() + (float)boostPlatform.getWidth()/2,
+                boostPlatform.getY() - (float)boostPlatform.getHeight()/2,
+                boost_paint);
+
         // draw player
         c.drawRect(player.getX() - player.getRadius(),
                 player.getY() + player.getRadius(),
                 player.getX() + player.getRadius(),
                 player.getY() - player.getRadius(),
                 player_paint);
+
+        c.drawText(Integer.toString(score), 100, 100, score_paint);
 
         holder.unlockCanvasAndPost(c);
     }
