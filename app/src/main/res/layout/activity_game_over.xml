@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9E8B9"
+    android:background="#31F9E8B9"
     tools:context=".GameOverActivity">
 
     <TextView
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
         android:layout_marginBottom="480dp"
+        android:elevation="2dp"
         android:fontFamily="@font/pt_sans_narrow_bold"
         android:text="GAME OVER"
         android:textAllCaps="true"
@@ -67,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button8" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/froggo"
         android:layout_width="166dp"
         android:layout_height="172dp"
         android:layout_marginStart="5dp"
@@ -75,4 +76,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/froggo_laying" />
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="445dp"
+        android:layout_height="759dp"
+        android:elevation="-2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background_img" />
 </androidx.constraintlayout.widget.ConstraintLayout>
