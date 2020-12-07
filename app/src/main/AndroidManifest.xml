@@ -9,25 +9,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GameOverActivity"
+        <activity android:name=".SelectDifficultyActivity"></activity>
+        <activity
+            android:name=".GameOverActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ProActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".IntermediateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".IntermediateActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".CasualActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CasualActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MusicPlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LeaderboardActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".LeaderboardActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -36,6 +40,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <service android:name=".BackgroundAudioService"/>
     </application>
 
 </manifest>
