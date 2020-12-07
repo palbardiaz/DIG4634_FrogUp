@@ -18,7 +18,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         TextView scoreText = this.findViewById(R.id.scoreView);
 
-        scoreText.setText("Score: " + score);
+        scoreText.setText("SCORE: " + score);
     }
 
     public void onPlayAgain(View view) {

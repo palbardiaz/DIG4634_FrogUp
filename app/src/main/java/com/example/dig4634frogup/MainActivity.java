@@ -40,43 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSettingsClicked(View view){
         if(!isSettingsOpen) {
-            trophy.setVisibility(View.VISIBLE);
-            trophy.setAlpha(0.0f);
-            trophy.animate()
-                    .translationY(0)
-                    .alpha(1.0f)
-                    .setListener(null);
-
-            music.setVisibility(View.VISIBLE);
-            music.setAlpha(0.0f);
-            music.animate()
-                    .translationY(0)
-                    .alpha(1.0f)
-                    .setListener(null);
-
+            FadeIn();
             isSettingsOpen = true;
         }
         else {
-            trophy.animate()
-                    .translationY(view.getHeight())
-                    .alpha(0.0f)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            trophy.setVisibility(View.GONE);
-                        }
-                    });
-            music.animate()
-                    .translationY(view.getHeight())
-                    .alpha(0.0f)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            music.setVisibility(View.GONE);
-                        }
-                    });
+            FadeOut(view);
             isSettingsOpen = false;
         }
     }
@@ -98,5 +66,45 @@ public class MainActivity extends AppCompatActivity {
     public void onLeaderboardClicked(View view){
         Intent myIntent = new Intent(getBaseContext(), LeaderboardActivity.class);
         startActivity(myIntent);
+    }
+
+    public void FadeIn(){
+        trophy.setVisibility(View.VISIBLE);
+        trophy.setAlpha(0.0f);
+        trophy.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setListener(null);
+
+        music.setVisibility(View.VISIBLE);
+        music.setAlpha(0.0f);
+        music.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setListener(null);
+
+    }
+
+    public void FadeOut(View view){
+        trophy.animate()
+                .translationY(view.getHeight())
+                .alpha(0.0f)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        trophy.setVisibility(View.GONE);
+                    }
+                });
+        music.animate()
+                .translationY(view.getHeight())
+                .alpha(0.0f)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        music.setVisibility(View.GONE);
+                    }
+                });
     }
 }
