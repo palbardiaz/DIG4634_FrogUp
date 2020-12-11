@@ -91,6 +91,10 @@ public class ProActivity extends AppCompatActivity implements SensorEventListene
 
         if (player.isDead()) {
 
+            if (score > GlobalVariables.highscore_hard) {
+                GlobalVariables.highscore_hard = score;
+            }
+
             Intent intent = new Intent(getBaseContext(), GameOverActivity.class);
             intent.putExtra("SCORE", Integer.toString(score));
             intent.putExtra("LEVEL", "PRO");

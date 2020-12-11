@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -84,6 +85,14 @@ public class CasualActivity extends AppCompatActivity implements SensorEventList
     public void update(int width, int height){
 
         if (player.isDead()) {
+            if (score > GlobalVariables.highscore_casual) {
+                GlobalVariables.highscore_casual = score;
+
+                SharedPreferences mPrefs_casual = getSharedPreferences("casual_highscore", 0);
+                SharedPreferences.Editor editor = mPrefs_casual.edit();
+                editor.putString("score", Integer.toString(GlobalVariables.highscore_casual)); //check if it resets everytime, make another saved variable?
+                editor.commit();
+            }
 
             Intent intent = new Intent(getBaseContext(), GameOverActivity.class);
             intent.putExtra("SCORE", Integer.toString(score));

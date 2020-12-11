@@ -87,6 +87,10 @@ public class IntermediateActivity extends AppCompatActivity implements SensorEve
 
         if (player.isDead()) {
 
+            if (score > GlobalVariables.highscore_med) {
+                GlobalVariables.highscore_med = score;
+            }
+
             Intent intent = new Intent(getBaseContext(), GameOverActivity.class);
             intent.putExtra("SCORE", Integer.toString(score));
             intent.putExtra("LEVEL", "INTERMEDIATE");

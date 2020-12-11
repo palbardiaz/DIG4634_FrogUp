@@ -18,6 +18,117 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/background_img" />
 
+    <TextView
+        android:id="@+id/scoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pt_sans_narrow_bold"
+        android:text="High scores"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#070707"
+        android:textSize="80px"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/scoreText2"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="410dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/pt_sans_narrow_bold"
+        android:text="Easy"
+        android:textAllCaps="true"
+        android:textColor="#070707"
+        android:textSize="80px"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/scoreEasy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="410dp"
+        android:fontFamily="@font/pt_sans_narrow_bold"
+        android:text="0"
+        android:textAlignment="textEnd"
+        android:textAllCaps="true"
+        android:textColor="#070707"
+        android:textSize="80px"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/scoreText2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/scoreMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/pt_sans_narrow_bold"
+        android:text="0"
+        android:textAlignment="textEnd"
+        android:textAllCaps="true"
+        android:textColor="#070707"
+        android:textSize="80px"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/scoreText3"
+        app:layout_constraintTop_toBottomOf="@+id/scoreEasy" />
+
+    <TextView
+        android:id="@+id/scoreHard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/pt_sans_narrow_bold"
+        android:text="0"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#070707"
+        android:textSize="80px"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/scoreText4"
+        app:layout_constraintTop_toBottomOf="@+id/scoreMedium" />
+
+    <TextView
+        android:id="@+id/scoreText3"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/pt_sans_narrow_bold"
+        android:text="Medium"
+        android:textAllCaps="true"
+        android:textColor="#070707"
+        android:textSize="80px"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreText2" />
+
+    <TextView
+        android:id="@+id/scoreText4"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/pt_sans_narrow_bold"
+        android:text="Hard"
+        android:textAllCaps="true"
+        android:textColor="#070707"
+        android:textSize="80px"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreText3" />
+
     <Button
         android:id="@+id/button4"
         android:layout_width="400px"
@@ -36,7 +147,7 @@
         android:id="@+id/textView6"
         android:layout_width="309dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/pt_sans_narrow_bold"
         android:text="LeaderBoard"
         android:textAllCaps="true"
@@ -46,5 +157,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="170dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scoreText"
+        app:srcCompat="@drawable/leaderboard_trophy" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
