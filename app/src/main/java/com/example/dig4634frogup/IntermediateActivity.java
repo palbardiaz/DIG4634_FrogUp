@@ -86,7 +86,6 @@ public class IntermediateActivity extends AppCompatActivity implements SensorEve
     public void update(int width, int height){
 
         if (player.isDead()) {
-
             if (score > GlobalVariables.highscore_med) {
                 GlobalVariables.highscore_med = score;
             }
