@@ -2,6 +2,8 @@ package com.example.dig4634frogup;
 
 import android.util.Log;
 
+import java.io.IOException;
+
 public class Player {
     private float xPos;
     private float yPos;
@@ -60,6 +62,9 @@ public class Player {
                     && xPos < p[i].getX() + (float)p[i].getWidth()/2 + 50
                     && xPos > p[i].getX() - (float)p[i].getWidth()/2- 50) {
                 yVel = JUMP_VEL;
+                //GlobalVariables.jumpSound.reset();
+                GlobalVariables.jumpSound.play(GlobalVariables.jumpSoundId, 1, 1, 1, 0, 1f);
+                //GlobalVariables.jumpSound.start();
                 //Log.d("Info" , p.getY())
             }
         }
@@ -70,6 +75,8 @@ public class Player {
                 && xPos < b.getX() + (float)b.getWidth()/2 + 50
                 && xPos > b.getX() - (float)b.getWidth()/2- 50) {
             yVel = BOOST_VEL;
+            GlobalVariables.boostSound.play(GlobalVariables.boostSoundId, 1, 1, 1, 0, 1f);
+            //GlobalVariables.boostSound.start();
             //Log.d("Info" , p.getY())
         }
 
@@ -101,6 +108,7 @@ public class Player {
                         && xPos < p[i].getX() + (float)p[i].getWidth()/2 + 50
                         && xPos > p[i].getX() - (float)p[i].getWidth()/2- 50) {
                     yVel = JUMP_VEL;
+                    GlobalVariables.jumpSound.play(GlobalVariables.jumpSoundId, 1, 1, 1, 0, 1f);
                     //Log.d("Info" , p.getY())
                 }
             }
@@ -112,6 +120,7 @@ public class Player {
                         && xPos < m[i].getX() + (float)m[i].getWidth()/2 + 50
                         && xPos > m[i].getX() - (float)m[i].getWidth()/2- 50) {
                     yVel = JUMP_VEL;
+                    GlobalVariables.jumpSound.play(GlobalVariables.jumpSoundId, 1, 1, 1, 0, 1f);
                     //Log.d("Info" , p.getY())
                 }
             }
@@ -122,6 +131,8 @@ public class Player {
                     && xPos < b.getX() + (float)b.getWidth()/2 + 50
                     && xPos > b.getX() - (float)b.getWidth()/2- 50) {
                 yVel = BOOST_VEL;
+                GlobalVariables.boostSound.play(GlobalVariables.boostSoundId, 1, 1, 1, 0, 1f);
+                //GlobalVariables.boostSound.start();
                 //Log.d("Info" , p.getY())
             }
         }

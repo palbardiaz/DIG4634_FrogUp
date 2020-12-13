@@ -71,7 +71,7 @@ public class ProActivity extends AppCompatActivity implements SensorEventListene
 
         score_paint=new Paint();
         score_paint.setColor(Color.BLACK);
-        score_paint.setTextSize(100);
+        score_paint.setTextSize(90);
 
         boundary_paint = new Paint();
         boundary_paint.setColor(Color.MAGENTA);
@@ -240,7 +240,7 @@ public class ProActivity extends AppCompatActivity implements SensorEventListene
             }
         }
 
-        c.drawText(Integer.toString(score), 100, 100, score_paint);
+        c.drawText("Score: "  + Integer.toString(score), 30 , 100, score_paint);
 
         holder.unlockCanvasAndPost(c);
     }
