@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -33,10 +36,21 @@ public class ProActivity extends AppCompatActivity implements SensorEventListene
     Paint score_paint;
     Paint boost_paint;
     Paint boundary_paint;
+    Bitmap bg;
+    Bitmap sitFrog;
+    Bitmap downLeftFrog;
+    Bitmap downRightFrog;
+    Bitmap floatFrogLeft;
+    Bitmap floatFrogRight;
+    Bitmap platform;
+    Bitmap boost;
+    Bitmap thorns;
 
     StandardPlatform[] platforms;
     BoostPlatform boostPlatform;
     MovingPlatform[] movingPlatforms;
+
+    int[] thornPos = new int[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +74,7 @@ public class ProActivity extends AppCompatActivity implements SensorEventListene
         score_paint.setTextSize(100);
 
         boundary_paint = new Paint();
-        boundary_paint.setColor(Color.RED);
+        boundary_paint.setColor(Color.MAGENTA);
 
         platforms = new StandardPlatform[3];
         platforms[0] = new StandardPlatform(540, 1500);
@@ -72,6 +86,22 @@ public class ProActivity extends AppCompatActivity implements SensorEventListene
         movingPlatforms = new MovingPlatform[2];
         movingPlatforms[0] = new MovingPlatform(800, 1000);
         movingPlatforms[1] = new MovingPlatform(400, 100);
+
+        thornPos[0] = 0;
+        thornPos[1] = Resources.getSystem().getDisplayMetrics().heightPixels/2-100;
+        thornPos[2] = 2*(Resources.getSystem().getDisplayMetrics().heightPixels/2-100);
+        thornPos[3] = 3*(Resources.getSystem().getDisplayMetrics().heightPixels/2-100);
+
+        bg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.bglight), Resources.getSystem().getDisplayMetrics().widthPixels,(int)(Resources.getSystem().getDisplayMetrics().heightPixels-800),false);
+        sitFrog = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.froggie),player.getRadius()*2,player.getRadius()*2,false);
+        downLeftFrog = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.froggo_laying),player.getRadius()*2,player.getRadius()*2,false);
+        downRightFrog = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.froggo_laying),player.getRadius()*-2,player.getRadius()*2,false);
+        floatFrogLeft = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.froggo_dancing),player.getRadius()*-2,player.getRadius()*2,false);
+        floatFrogRight = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.froggo_dancing),player.getRadius()*2,player.getRadius()*2,false);
+        platform = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.plat), platforms[0].getWidth(), platforms[0].getHeight(), false);
+        boost = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.boost), boostPlatform.getWidth(), boostPlatform.getHeight(), false);
+        thorns = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.thorns), 100, Resources.getSystem().getDisplayMetrics().heightPixels/2, false);
+
 
         SensorManager manager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer=manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -117,6 +147,13 @@ public class ProActivity extends AppCompatActivity implements SensorEventListene
 
         boostPlatform.update(cameraSpeed);
 
+        for(int i = 0; i < 4; i++) {
+            thornPos[i] -= cameraSpeed;
+            if (thornPos[i] > Resources.getSystem().getDisplayMetrics().heightPixels) {
+                thornPos[i] = thornPos[(i+1)%4] - (Resources.getSystem().getDisplayMetrics().heightPixels/2-100);
+            }
+        }
+
         if (player.getY() < 500 && player.getSpeed() < 0) {
             cameraSpeed = player.getSpeed();
             //Log.d("Speed", String.valueOf(cameraSpeed));
@@ -134,43 +171,74 @@ public class ProActivity extends AppCompatActivity implements SensorEventListene
 
         update(c.getWidth(),c.getHeight());
 
-        c.drawColor(Color.rgb(250,250,250));
+        c.drawColor(Color.rgb(200,230,250));
+
+        c.drawBitmap(bg, 0, 800, null);
 
         // draw boundaries
-        c.drawRect(0,0,15,2100, boundary_paint);
-        c.drawRect(1065,0,1080,2100, boundary_paint);
+        /*c.drawRect(0,0,15,2100, boundary_paint);
+        c.drawRect(1065,0,1080,2100, boundary_paint);*/
+        c.drawBitmap(thorns, -10,thornPos[0], null);
+        c.drawBitmap(thorns, -10, thornPos[1], null);
+        c.drawBitmap(thorns, -10, thornPos[2], null);
+        c.drawBitmap(thorns, -10, thornPos[3], null);
+        c.drawBitmap(thorns, Resources.getSystem().getDisplayMetrics().widthPixels - 90,thornPos[0], null);
+        c.drawBitmap(thorns, Resources.getSystem().getDisplayMetrics().widthPixels - 90, thornPos[1], null);
+        c.drawBitmap(thorns, Resources.getSystem().getDisplayMetrics().widthPixels - 90, thornPos[2], null);
+        c.drawBitmap(thorns, Resources.getSystem().getDisplayMetrics().widthPixels - 90, thornPos[3], null);
 
         // draw platforms
         for (int i = 0; i < platforms.length; i++) {
-            c.drawRect(platforms[i].getX() - (float)platforms[i].getWidth()/2,
+            /*c.drawRect(platforms[i].getX() - (float)platforms[i].getWidth()/2,
                     platforms[i].getY() + (float)platforms[i].getHeight()/2,
                     platforms[i].getX() + (float)platforms[i].getWidth()/2,
                     platforms[i].getY() - (float)platforms[i].getHeight()/2,
-                    platform_paint);
+                    platform_paint);*/
+            c.drawBitmap(platform, platforms[i].getX() - (float)platforms[i].getWidth()/2, platforms[i].getY() - (float)platforms[i].getHeight()/2, null);
         }
 
         // draw moving platforms
         for (int i = 0; i < movingPlatforms.length; i++) {
-            c.drawRect(movingPlatforms[i].getX() - (float)movingPlatforms[i].getWidth()/2,
+            /*c.drawRect(movingPlatforms[i].getX() - (float)movingPlatforms[i].getWidth()/2,
                     movingPlatforms[i].getY() + (float)movingPlatforms[i].getHeight()/2,
                     movingPlatforms[i].getX() + (float)movingPlatforms[i].getWidth()/2,
                     movingPlatforms[i].getY() - (float)movingPlatforms[i].getHeight()/2,
-                    platform_paint);
+                    platform_paint);*/
+            c.drawBitmap(platform, movingPlatforms[i].getX() - (float)movingPlatforms[i].getWidth()/2, movingPlatforms[i].getY() - (float)movingPlatforms[i].getHeight()/2, null);
         }
 
         // draw boost platforms
-        c.drawRect(boostPlatform.getX() - (float)boostPlatform.getWidth()/2,
+        /*c.drawRect(boostPlatform.getX() - (float)boostPlatform.getWidth()/2,
                 boostPlatform.getY() + (float)boostPlatform.getHeight()/2,
                 boostPlatform.getX() + (float)boostPlatform.getWidth()/2,
                 boostPlatform.getY() - (float)boostPlatform.getHeight()/2,
-                boost_paint);
+                boost_paint);*/
+
+        c.drawBitmap(boost, boostPlatform.getX() - (float)boostPlatform.getWidth()/2, boostPlatform.getY() - (float)boostPlatform.getHeight()/2, null);
+
 
         // draw player
-        c.drawRect(player.getX() - player.getRadius(),
+        /*c.drawRect(player.getX() - player.getRadius(),
                 player.getY() + player.getRadius(),
                 player.getX() + player.getRadius(),
                 player.getY() - player.getRadius(),
-                player_paint);
+                player_paint);*/
+
+        if (player.getSpeed() < -20 ) {
+            c.drawBitmap(sitFrog, player.getX() - player.getRadius(), player.getY() - player.getRadius(), null);
+        } else if (player.getSpeed() < 20) {
+            if (acc_x > 1) {
+                c.drawBitmap(floatFrogLeft, player.getX() - player.getRadius(), player.getY() - player.getRadius(), null);
+            } else {
+                c.drawBitmap(floatFrogRight, player.getX() - player.getRadius(), player.getY() - player.getRadius(), null);
+            }
+        } else {
+            if (acc_x > 1) {
+                c.drawBitmap(downRightFrog, player.getX() - player.getRadius(), player.getY() - player.getRadius(), null);
+            } else {
+                c.drawBitmap(downLeftFrog, player.getX() - player.getRadius(), player.getY() - player.getRadius(), null);
+            }
+        }
 
         c.drawText(Integer.toString(score), 100, 100, score_paint);
 
